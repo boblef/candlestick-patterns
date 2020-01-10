@@ -4,13 +4,16 @@ import requests
 
 # Find candles where inverted hammer is detected
 
-candles = requests.get('https://api.binance.com/api/v1/klines?symbol=BTCUSDT&interval=1d')
+candles = requests.get(
+    'https://api.binance.com/api/v1/klines?symbol=BTCUSDT&interval=1d')
 candles_dict = candles.json()
 
 candles_df = pd.DataFrame(candles_dict,
-                          columns=['T', 'open', 'high', 'low', 'close', 'V', 'CT', 'QV', 'N', 'TB', 'TQ', 'I'])
+                          columns=['T', 'open', 'high', 'low', 'close', 'V',
+                                   'CT', 'QV', 'N', 'TB', 'TQ', 'I'])
 
-candles_df['T'] = pd.to_datetime(candles_df['T'], unit='ms')
+candles_df['T'] = pd.to_datetime(candles_df['T'],
+                                 unit='ms')
 
 target = 'InvertedHammers'
 candles_df = candlestick.inverted_hammer(candles_df, target=target)
